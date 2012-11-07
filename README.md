@@ -1,0 +1,3 @@
+This is a teeny little demo for how to use [recorderjs](https://github.com/mattdiamond/Recorderjs) to record and play back audio. It only works in Google Chrome v23+ with the "Web Audio Input" flag enabled in chrome://flags.
+
+Just a warning to anyone who runs this - Chrome's Web Audio input has a *looot* of annoying and potentially headache-inducing feedback if you're using a microphone and external speakers. Plug in headphones.
