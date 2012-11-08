@@ -15,7 +15,17 @@ $(function () {
       var url = window.webkitURL.createObjectURL(wav);
       $("audio#recorded-audio").attr("src", url);
       $("audio#recorded-audio").get()[0].load();
-    }.bind(this))
+    });
+  }
+
+  var playbackRecorderAudio = function (recorder, context) {
+    recorder.getBuffer(function (buffer) {
+      var source = context.createBufferSource();
+      source.buffer = context.createBuffer(1, buffer.length, 96000);
+      source.buffer.getChannelData(0).set(buffer);
+      source.connect(context.destination);
+      source.noteOn(0);
+    });
   }
 
   navigator.webkitGetUserMedia({"audio": true}, function(stream) {
@@ -43,6 +53,11 @@ $(function () {
       }
 
     });
+
+    $("a#webaudio-playback").click(function (e) {
+      e.preventDefault();
+      playbackRecorderAudio(recorder, audioContext);
+    })
 
   }, 
 

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Boombox</title>
+    <title>Recorder</title>
 
     <script src="script/lib/jquery-1.8.2.min.js"></script>
     <script src="script/lib/recorderjs/recorder.js"></script>
@@ -16,8 +16,11 @@
     <div id="hidden" style="display:none">
       <a id="record-toggle" href="#">Click me to record.</a><br/><br/>
 
+      Play back using the audio exported to a WAV blob & the &lt;audio&gt; tag.<br/>
       <audio id="recorded-audio" controls="controls">
-      </audio>
+      </audio><br/><br/>
+
+      <a id="webaudio-playback" href="#">Click me to play back using Web Audio.</a>
     </div>
   </body>
 </html>
