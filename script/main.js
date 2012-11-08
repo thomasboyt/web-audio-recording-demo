@@ -21,7 +21,7 @@ $(function () {
   var playbackRecorderAudio = function (recorder, context) {
     recorder.getBuffer(function (buffer) {
       var source = context.createBufferSource();
-      source.buffer = context.createBuffer(1, buffer.length, 96000);
+      source.buffer = context.createBuffer(1, buffer.length, 88200);
       source.buffer.getChannelData(0).set(buffer);
       source.connect(context.destination);
       source.noteOn(0);
