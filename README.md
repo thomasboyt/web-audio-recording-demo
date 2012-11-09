@@ -14,7 +14,7 @@ Recorder.js is a really simple library, and I encourage you to take a look at it
 
 The `Recorder` creates a new `AudioNode` in the `AudioContext` that processes and records the audio. It uses the `onaudioprocess` event each node has to record the data at a given interval, defined by the `bufferSize` parameter. Via the W3C Web Audio spec:
 
-  The bufferSize parameter determines the buffer size in units of sample-frames. It must be one of the following values: 256, 512, 1024, 2048, 4096, 8192, 16384. This value controls how frequently the onaudioprocess event handler is called and how many sample-frames need to be processed each call. Lower values for bufferSize will result in a lower (better) latency. Higher values will be necessary to avoid audio breakup and glitches. The value chosen must carefully balance between latency and audio quality.
+> The bufferSize parameter determines the buffer size in units of sample-frames. It must be one of the following values: 256, 512, 1024, 2048, 4096, 8192, 16384. This value controls how frequently the onaudioprocess event handler is called and how many sample-frames need to be processed each call. Lower values for bufferSize will result in a lower (better) latency. Higher values will be necessary to avoid audio breakup and glitches. The value chosen must carefully balance between latency and audio quality.
 
  You can define the buffer size yourself when creating a `Recorder` object if you'd like to override it, but by default it's 4096. 
 
