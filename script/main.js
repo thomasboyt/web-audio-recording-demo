@@ -19,10 +19,11 @@ $(function () {
   }
 
   var playbackRecorderAudio = function (recorder, context) {
-    recorder.getBuffer(function (buffer) {
+    recorder.getBuffer(function (buffers) {
       var source = context.createBufferSource();
-      source.buffer = context.createBuffer(1, buffer.length, 88200);
-      source.buffer.getChannelData(0).set(buffer);
+      source.buffer = context.createBuffer(1, buffers[0].length, 44100);
+      source.buffer.getChannelData(0).set(buffers[0]);
+      source.buffer.getChannelData(0).set(buffers[1]);
       source.connect(context.destination);
       source.noteOn(0);
     });
@@ -37,7 +38,9 @@ $(function () {
     var mediaStreamSource = audioContext.createMediaStreamSource( stream );
     mediaStreamSource.connect( audioContext.destination );
 
-    var recorder = new Recorder(mediaStreamSource);
+    var recorder = new Recorder(mediaStreamSource, {
+      workerPath: "/script/lib/recorderjs/recorderWorker.js"
+    });
     var recording = false;
 
     $("a#record-toggle").click(function (e) {

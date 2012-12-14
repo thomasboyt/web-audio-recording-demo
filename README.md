@@ -1,6 +1,10 @@
-This is a teeny little demo for how to use [recorder.js](https://github.com/mattdiamond/Recorderjs) to record and play back audio. It only works in Google Chrome v23+ with the "Web Audio Input" flag enabled in chrome://flags.
+This is a teeny little demo for how to use [recorder.js](https://github.com/mattdiamond/Recorderjs) to record and play back audio. Recorder.js is a small convenience library for recording and playing back audio using the Web Audio API.
+
+Currently, this demo is only confirmed to work in Google Chrome v23+ on OSX with the "Web Audio Input" flag enabled in chrome://flags. It may or may not be working on Windows or Linux, as Chrome's web audio recording support is under constant development.
 
 Just a warning to anyone who runs this - Chrome's Web Audio input has a *lot* of annoying and potentially headache-inducing feedback if you're using a microphone and external speakers. Plug in headphones.
+
+I originally wrote this demo walkthrough as documentation within the code, but since the code is event-driven rather than linear, it ended up being a bit messy. 
 
 ## How it works
 
@@ -32,21 +36,19 @@ The playback process of Recorder.js is almost more interesting than the recordin
 
 The first method of playback is easier, yet less powerful. Recorder.js includes an `exportWAV` method that creates a WAV blob from the recorded buffer. 
 
-When the user has finished recording, this method is called, returning (in a callback) the WAV blob. A [blob URL](https://developer.mozilla.org/en-US/docs/DOM/window.URL.createObjectURL) is created from this blob, allowing us to reference the blob as if it was an external file. This URL is set to be the `src` property of the `<audio>` tag on the page, and it is loaded and able to be played back by the user.
+When the user has finished recording, [this method is called][exportWAV], returning (in a callback) the WAV blob. A [blob URL](https://developer.mozilla.org/en-US/docs/DOM/window.URL.createObjectURL) is created from this blob, allowing us to reference the blob as if it was an external file. This URL is set to be the `src` property of the `<audio>` tag on the page, and it is loaded and able to be played back by the user.
 
 #### Web Audio Playback
 
-While the former method is easy, and allows the use of the standard `<audio>` tag with the new file, it lacks the power of using the Web Audio API to play it back. By using Web Audio, you can add all sorts of effects and processing before it is played back, combine it with other recordings, and transform your recording in whatever other ways you want.
+While the former method allows the use of the standard `<audio>` tag with the new file, it lacks the power of using the Web Audio API to play it back. By using Web Audio, you can add all sorts of effects and processing before it is played back, combine it with other recordings, and transform your recording in whatever other ways you want. Recorder.js has a `getBuffer` method that can be used for retrieving the recorded buffer, as it is [within the demo][getBuffer].
 
-To play back the recorded buffer using Web Audio, all that needs to be done is to create a new audio source in our existing context and set its `channelData` to be a merged version of our recorded data (as our original recording contains many partial arrays of data).
-
-Recorder.js already has a `mergeBuffer()` method built-in for merging the data together, which is used in exporting WAVs. Unfortunately, it doesn't come with a method for passing this buffer to a callback, but I've added one in [my own fork](https://github.com/thomasboyt/Recorderjs), `recorder.getBuffer([callback])`. 
-
-Once the buffer is returned to us, we simply create the new source, set the `channelData` to be our merged buffer, connect the source to our destination, and play it back. It's not much more complex than using an `<audio>` tag, but is potentially much more powerful - we could add all sorts of processing nodes between the source and the destination, if we were so inclined.
+`getBuffer` returns a pair of Float32Arrays of audio data, one for each channel (left and right). To play it back, we simply create the a new source and create left and right buffers on it using `context.createBuffer`. We set the `channelData` to be the data arrays we retrieved, connect the source to our destination, and play it back. It's not much more complex than using an `<audio>` tag, but is potentially much more powerful - we could add all sorts of processing nodes between the source and the destination, if we were so inclined.
 
 ## Resources
 
 * [W3C Web Audio spec](https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html) - If you're not used to reading these specs, they can be difficult to translate from "language for specification implimenters" to "language for web developers," but it's certainly the most comprehensive source on the matter.
 * [Using web workers](https://developer.mozilla.org/en-US/docs/DOM/Using_web_workers)
 * [Recorder.js](https://github.com/mattdiamond/Recorderjs)
-* [My fork](https://github.com/thomasboyt/Recorderjs) of Recorder.js, which adds `getBuffer`
+
+[exportWAV]: https://github.com/thomasboyt/web-audio-recording-demo/blob/master/script/main.js#L14
+[getBuffer]: https://github.com/thomasboyt/web-audio-recording-demo/blob/master/script/main.js#L22
